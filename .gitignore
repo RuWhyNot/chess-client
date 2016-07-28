@@ -1,0 +1,6 @@
+*.suo
+*.exe
+*.pdb
+*.Cache
+/Chess Windows Client/bin
+/Chess Windows Client/obj
