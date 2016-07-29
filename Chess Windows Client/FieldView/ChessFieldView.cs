@@ -37,7 +37,6 @@ namespace Chess_Windows_Client
 				Point cellPos = new Point((int)Math.Floor((pos.X - Pos.X) / (Size.X) * ChessGameField.FIELD_SIZE),
 					(int)Math.Floor((pos.Y - Pos.Y) / (Size.Y) * ChessGameField.FIELD_SIZE));
 
-
 				ChessGameField.Cell cell = Field.GetCell(cellPos);
 				if (State == ActionState.Idle)
 				{

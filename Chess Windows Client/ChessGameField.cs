@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess_Windows_Client.Figures.Specific;
+using System;
 using System.Drawing;
 
 namespace Chess_Windows_Client
@@ -23,9 +24,14 @@ namespace Chess_Windows_Client
 			for (int i = 0; i < FIELD_SIZE; ++i)
 			{
 				Field[i, 1].figure = new Pawn(Player.Black);
-
 				Field[i, 6].figure = new Pawn(Player.White);
 			}
+
+			Field[1, 0].figure = new Knight(Player.Black);
+			Field[6, 0].figure = new Knight(Player.Black);
+
+			Field[1, 7].figure = new Knight(Player.White);
+			Field[6, 7].figure = new Knight(Player.White);
 		}
 
 		public static Player GetOpponent(Player player)
@@ -53,8 +59,18 @@ namespace Chess_Windows_Client
 			}
 		}
 
+		private bool IsPosValid(Point pos)
+		{
+			return (pos.X >= 0 && pos.Y >= 0 && pos.X < FIELD_SIZE && pos.Y < FIELD_SIZE);
+		}
+
 		public bool MakeMove(Player player, Point from, Point to)
 		{
+			if (!IsPosValid(from) || !IsPosValid(to) || (from.X == to.X && from.Y == to.Y))
+			{
+				return false;
+			}
+
 			ChessFigure figure = GetCell(from).figure;
             if (figure != null && figure.GetOwner() == player)
 			{

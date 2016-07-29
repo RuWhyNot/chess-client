@@ -46,10 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChessFieldView.cs" />
-    <Compile Include="ChessFigures\ChessFigure.cs" />
-    <Compile Include="Figure.cs" />
-    <Compile Include="FigureImpl.cs" />
+    <Compile Include="FieldView\ChessFieldView.cs" />
+    <Compile Include="Figures\ChessFigure.cs" />
+    <Compile Include="Figures\Figure.cs" />
+    <Compile Include="Figures\FigureImpl.cs" />
+    <Compile Include="Figures\Specific\Knight.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,8 +58,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ChessGameField.cs" />
-    <Compile Include="IFieldView.cs" />
-    <Compile Include="ChessFigures\Pawn.cs" />
+    <Compile Include="FieldView\IFieldView.cs" />
+    <Compile Include="Figures\Specific\Pawn.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
