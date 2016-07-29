@@ -20,7 +20,7 @@ namespace Chess_Windows_Client
 		public bool Move(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
 		{
 			ChessGameField.Cell cellTo = field[posTo.X, posTo.Y];
-			if (cellTo.figure == null && posFrom.X == posTo.X)
+			if (cellTo.figure == null && posFrom.X == posTo.X) // Move
 			{
 				if ((GetOwner() == Player.White && posFrom.Y == posTo.Y + 1)
 					|| (GetOwner() == Player.Black && posFrom.Y == posTo.Y - 1))
@@ -37,7 +37,7 @@ namespace Chess_Windows_Client
 					return true;
 				}
 			}
-			else if (cellTo.figure != null && cellTo.figure.GetOwner() != GetOwner())
+			else if (cellTo.figure != null && cellTo.figure.GetOwner() != GetOwner()) // Capture
 			{
 				bool diag = posFrom.X == posTo.X - 1 || posFrom.X == posTo.X + 1;
 				bool playerDir = (GetOwner() == Player.White && posFrom.Y == posTo.Y + 1)
@@ -49,7 +49,7 @@ namespace Chess_Windows_Client
 					return true;
 				}
 			}
-			else if (cellTo.figure == null && (posFrom.X == posTo.X - 1 || posFrom.X == posTo.X + 1))
+			else if (cellTo.figure == null && (posFrom.X == posTo.X - 1 || posFrom.X == posTo.X + 1)) // En passant
 			{
 				if ((GetOwner() == Player.White && posFrom.Y == posTo.Y + 1)
 					|| (GetOwner() == Player.Black && posFrom.Y == posTo.Y - 1))
