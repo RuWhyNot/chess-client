@@ -9,6 +9,8 @@ namespace Chess_Windows_Client
 
 		private Cell[,] Field = new Cell[FIELD_SIZE, FIELD_SIZE];
 
+		private ChessFigure LastMovedFigure;
+
 		public struct Cell
 		{
 			public ChessFigure figure;
@@ -56,9 +58,10 @@ namespace Chess_Windows_Client
 			ChessFigure figure = GetCell(from).figure;
             if (figure != null && figure.GetOwner() == player)
 			{
-				if (figure.Move(ref Field, from, to))
+				if (figure.Move(ref Field, from, to, LastMovedFigure))
 				{
-					return true;
+					LastMovedFigure = figure;
+                    return true;
 				}
 			}
 
