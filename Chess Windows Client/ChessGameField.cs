@@ -44,6 +44,9 @@ namespace Chess_Windows_Client
 
 			Field[3, 0].figure = new King(Player.Black);
 			Field[3, 7].figure = new King(Player.White);
+
+			Field[4, 0].figure = new Queen(Player.Black);
+			Field[4, 7].figure = new Queen(Player.White);
 		}
 
 		public static Player GetOpponent(Player player)

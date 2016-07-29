@@ -14,7 +14,7 @@ namespace Chess_Windows_Client.Figures.Specific
 			g.DrawString("B", SystemFonts.DefaultFont, new SolidBrush(color), pos);
 		}
 
-		private bool IsPathFree(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo)
+		public static bool IsPathFree(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo)
 		{
 			if (Math.Abs(posTo.X - posFrom.X) == Math.Abs(posTo.Y - posFrom.Y))
 			{

@@ -13,7 +13,7 @@ namespace Chess_Windows_Client.Figures.Specific
 			g.DrawString("R", SystemFonts.DefaultFont, new SolidBrush(color), pos);
 		}
 
-		private bool IsPathFree(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo)
+		public static bool IsPathFree(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo)
 		{
 			if (posFrom.X == posTo.X)
 			{
@@ -27,7 +27,7 @@ namespace Chess_Windows_Client.Figures.Specific
 				}
 				return true;
 			}
-			else if (posFrom.Y == posFrom.Y)
+			else if (posFrom.Y == posTo.Y)
 			{
 				int dir = posTo.X - posFrom.X > 0 ? 1 : -1;
 				for (int i = posFrom.X + dir; i != posTo.X; i += dir)
