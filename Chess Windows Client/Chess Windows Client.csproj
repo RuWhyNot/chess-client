@@ -51,6 +51,7 @@
     <Compile Include="Figures\Figure.cs" />
     <Compile Include="Figures\FigureImpl.cs" />
     <Compile Include="Figures\Specific\Bishop.cs" />
+    <Compile Include="Figures\Specific\King.cs" />
     <Compile Include="Figures\Specific\Knight.cs" />
     <Compile Include="Figures\Specific\Rook.cs" />
     <Compile Include="Form1.cs">
