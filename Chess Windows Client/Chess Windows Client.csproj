@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="ChessFieldView.cs" />
     <Compile Include="ChessFigures\ChessFigure.cs" />
+    <Compile Include="Figure.cs" />
+    <Compile Include="FigureImpl.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +59,7 @@
     <Compile Include="ChessGameField.cs" />
     <Compile Include="IFieldView.cs" />
     <Compile Include="ChessFigures\Pawn.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

@@ -11,14 +11,7 @@ namespace Chess_Windows_Client
 
 		public struct Cell
 		{
-			public Player player;
 			public ChessFigure figure;
-		}
-
-		public enum Player
-		{
-			White,
-			Black
 		}
 
 		public ChessGameField()
@@ -27,11 +20,9 @@ namespace Chess_Windows_Client
 
 			for (int i = 0; i < FIELD_SIZE; ++i)
 			{
-				Field[i, 1].figure = new Pawn();
-				Field[i, 1].player = Player.Black;
+				Field[i, 1].figure = new Pawn(Player.Black);
 
-				Field[i, 6].figure = new Pawn();
-				Field[i, 6].player = Player.White;
+				Field[i, 6].figure = new Pawn(Player.White);
 			}
 		}
 
@@ -62,6 +53,15 @@ namespace Chess_Windows_Client
 
 		public bool MakeMove(Player player, Point from, Point to)
 		{
+			ChessFigure figure = GetCell(from).figure;
+            if (figure != null && figure.GetOwner() == player)
+			{
+				if (figure.Move(ref Field, from, to))
+				{
+					return true;
+				}
+			}
+
 			return false;
 		}
 	}

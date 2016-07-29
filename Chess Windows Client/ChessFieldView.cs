@@ -10,7 +10,7 @@ namespace Chess_Windows_Client
 		public ActionState State { get; private set; }
 
 		private ChessGameField Field = new ChessGameField();
-		private ChessGameField.Player CurrentPlayer = ChessGameField.Player.White;
+		private Player CurrentPlayer = Player.White;
 		private Point SelectedPoint = new Point(-1, -1);
 
 		public enum ActionState
@@ -48,7 +48,8 @@ namespace Chess_Windows_Client
 					if (Field.MakeMove(CurrentPlayer, SelectedPoint, cellPos))
 					{
 						ChangePlayer();
-					}
+						State = ActionState.Idle;
+                    }
 					else
 					{
 						SelectCell(cellPos, cell);
@@ -59,16 +60,16 @@ namespace Chess_Windows_Client
 
 		private void SelectCell(Point cellPos, ChessGameField.Cell cell)
 		{
-			if (cell.figure != null && cell.player == CurrentPlayer)
+			if (cell.figure != null && cell.figure.GetOwner() == CurrentPlayer)
 			{
 				SelectedPoint = cellPos;
 				State = ActionState.Selected;
 			}
 		}
 
-		private Color GetColor(ChessGameField.Player player)
+		private Color GetColor(Player player)
 		{
-			return (player == ChessGameField.Player.Black) ? Color.Black : Color.White;
+			return (player == Player.Black) ? Color.Black : Color.White;
 		}
 
 		private PointF GetCellPos(Point posInField, PointF cellSize)
@@ -92,7 +93,7 @@ namespace Chess_Windows_Client
 				g.DrawLine(Pens.Black, Pos.X, Pos.Y + i * cellSize.Y, Pos.X + Size.X, Pos.Y + i * cellSize.Y);
 			}
 
-			Field.ForEachCell((pos, cell) => { if (cell.figure != null) cell.figure.Draw(g, GetColor(cell.player), GetCellPos(pos, cellSize), cellSize); return true; });
+			Field.ForEachCell((pos, cell) => { if (cell.figure != null) cell.figure.Draw(g, GetColor(cell.figure.GetOwner()), GetCellPos(pos, cellSize), cellSize); return true; });
 
 			if (State == ActionState.Selected)
 			{
