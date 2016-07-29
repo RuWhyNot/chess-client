@@ -27,15 +27,20 @@ namespace Chess_Windows_Client
 				Field[i, 6].figure = new Pawn(Player.White);
 			}
 
+			Field[0, 0].figure = new Rook(Player.Black);
+			Field[7, 0].figure = new Rook(Player.Black);
+			Field[0, 7].figure = new Rook(Player.White);
+			Field[7, 7].figure = new Rook(Player.White);
+
 			Field[1, 0].figure = new Knight(Player.Black);
 			Field[6, 0].figure = new Knight(Player.Black);
 			Field[1, 7].figure = new Knight(Player.White);
 			Field[6, 7].figure = new Knight(Player.White);
 
-			Field[0, 0].figure = new Rook(Player.Black);
-			Field[7, 0].figure = new Rook(Player.Black);
-			Field[0, 7].figure = new Rook(Player.White);
-			Field[7, 7].figure = new Rook(Player.White);
+			Field[2, 0].figure = new Bishop(Player.Black);
+			Field[5, 0].figure = new Bishop(Player.Black);
+			Field[2, 7].figure = new Bishop(Player.White);
+			Field[5, 7].figure = new Bishop(Player.White);
 		}
 
 		public static Player GetOpponent(Player player)

@@ -11,7 +11,7 @@ namespace Chess_Windows_Client.Figures.Specific
 
 		public void Draw(Graphics g, Color color, PointF pos, PointF size)
 		{
-			g.DrawString("Kn", SystemFonts.DefaultFont, new SolidBrush(color), pos);
+			g.DrawString("Kt", SystemFonts.DefaultFont, new SolidBrush(color), pos);
 		}
 
 		public bool Move(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
