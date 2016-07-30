@@ -5,9 +5,6 @@ namespace Chess_Windows_Client
 {
 	class Pawn : FigureImpl, ChessFigure
 	{
-		private bool FirstMove = true;
-		public bool PreviousWasLongMove { get; private set; } = false;
-
 		public Pawn(Player player) : base(player)
 		{
 		}
@@ -30,11 +27,16 @@ namespace Chess_Windows_Client
 			return false;
 		}
 
+		public bool IsFirstMove(Point posFrom)
+		{
+			return ((GetOwner() == Player.White && posFrom.Y == 6) || (GetOwner() == Player.Black && posFrom.Y == 1));
+		}
+
 		public bool CanMoveTwoSteps(ChessGameField.Cell cellTo, Point posFrom, Point posTo)
 		{
 			if (cellTo.figure == null && posFrom.X == posTo.X)
 			{
-				if (FirstMove && ((GetOwner() == Player.White && posFrom.Y == posTo.Y + 2)
+				if (IsFirstMove(posFrom) && ((GetOwner() == Player.White && posFrom.Y == posTo.Y + 2)
 					|| (GetOwner() == Player.Black && posFrom.Y == posTo.Y - 2)))
 				{
 					return true;
@@ -42,7 +44,6 @@ namespace Chess_Windows_Client
 			}
 			return false;
 		}
-
 
 		public bool CanCapture(ChessGameField.Cell cellTo, Point posFrom, Point posTo)
 		{
@@ -60,7 +61,7 @@ namespace Chess_Windows_Client
 			return false;
 		}
 
-		public bool CanCaptureByEnPassant(ChessGameField.Cell[,] field, ChessGameField.Cell cellTo, Point posFrom, Point posTo, ChessFigure lastMovedFig)
+		public bool CanCaptureByEnPassant(ChessGameField.Cell[,] field, ChessGameField.Cell cellTo, Point posFrom, Point posTo, ChessMove lastMove)
 		{
 			if (cellTo.figure == null && (posFrom.X == posTo.X - 1 || posFrom.X == posTo.X + 1)) // En passant
 			{
@@ -71,7 +72,7 @@ namespace Chess_Windows_Client
 					if (opponentsFigure is Pawn && opponentsFigure.GetOwner() != GetOwner())
 					{
 						Pawn opponentsPawn = (Pawn)opponentsFigure;
-						if (lastMovedFig == opponentsPawn && opponentsPawn.PreviousWasLongMove)
+						if (lastMove.Fig == opponentsPawn && Math.Abs(lastMove.GetPrevPos().Y - posFrom.Y) == 2)
 						{
 							return true;
 						}
@@ -81,7 +82,7 @@ namespace Chess_Windows_Client
 			return false;
 		}
 
-		public bool CanMove(ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
+		public bool CanMove(ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessMove lastMove)
 		{
 			ChessGameField.Cell cellTo = field[posTo.X, posTo.Y];
 			if (CanMoveOneStep(cellTo, posFrom, posTo))
@@ -96,7 +97,7 @@ namespace Chess_Windows_Client
 			{
 				return true;
 			}
-			else if (CanCaptureByEnPassant(field, cellTo, posFrom, posTo, lastMovedFig))
+			else if (CanCaptureByEnPassant(field, cellTo, posFrom, posTo, lastMove))
 			{
 				return true;
 			}
@@ -104,41 +105,34 @@ namespace Chess_Windows_Client
 			return false;
 		}
 
-		public bool Move(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
+		public ChessMove Move(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessMove lastMove)
 		{
 			ChessGameField.Cell cellTo = field[posTo.X, posTo.Y];
-			if (CanMoveOneStep(cellTo, posFrom, posTo))
+			ChessMove move = new ChessMove();
+            if (CanMoveOneStep(cellTo, posFrom, posTo))
 			{
-				MoveInField(field, posFrom, posTo);
-				return true;
+				move.AddAction(new ChessMove.MoveAction(posFrom, posTo));
+				return move;
 			}
 			else if (CanMoveTwoSteps(cellTo, posFrom, posTo))
 			{
-				MoveInField(field, posFrom, posTo);
-				PreviousWasLongMove = true;
-				return true;
+				move.AddAction(new ChessMove.MoveAction(posFrom, posTo));
+				return move;
 			}
 			else if (CanCapture(cellTo, posFrom, posTo))
 			{
-				MoveInField(field, posFrom, posTo);
-				return true;
+				move.AddAction(new ChessMove.RemoveAction(posTo));
+				move.AddAction(new ChessMove.MoveAction(posFrom, posTo));
+				return move;
 			}
-			else if (CanCaptureByEnPassant(field, cellTo, posFrom, posTo, lastMovedFig))
+			else if (CanCaptureByEnPassant(field, cellTo, posFrom, posTo, lastMove))
 			{
-				MoveInField(field, posFrom, posTo);
-				field[posTo.X, posFrom.Y].figure = null;
-				return true;
+				move.AddAction(new ChessMove.RemoveAction(new Point(posTo.X, posFrom.Y)));
+				move.AddAction(new ChessMove.MoveAction(posFrom, posTo));
+				return move;
             }
 
-			return false;
-		}
-
-		private void MoveInField(ChessGameField.Cell[,] field, Point posFrom, Point posTo)
-		{
-			field[posTo.X, posTo.Y].figure = this;
-			field[posFrom.X, posFrom.Y].figure = null;
-			PreviousWasLongMove = false;
-			FirstMove = false;
+			return null;
 		}
 	}
 }

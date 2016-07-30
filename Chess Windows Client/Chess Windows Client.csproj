@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChessMove.cs" />
     <Compile Include="FieldView\ChessFieldView.cs" />
     <Compile Include="Figures\ChessFigure.cs" />
     <Compile Include="Figures\Figure.cs" />

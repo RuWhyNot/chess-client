@@ -9,7 +9,7 @@ namespace Chess_Windows_Client.Figures.Specific
 		{
 		}
 
-		public bool CanMove(ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
+		public bool CanMove(ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessMove lastMove)
 		{
 			Figure targetFig = field[posTo.X, posTo.Y].figure;
 			if (targetFig == null || targetFig.GetOwner() != GetOwner())
@@ -30,16 +30,20 @@ namespace Chess_Windows_Client.Figures.Specific
 			g.DrawString("K", SystemFonts.DefaultFont, new SolidBrush(color), pos);
 		}
 
-		public bool Move(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
+		public ChessMove Move(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessMove lastMove)
 		{
-			if (CanMove(field, posFrom, posTo, lastMovedFig))
+			if (CanMove(field, posFrom, posTo, lastMove))
 			{
-				field[posTo.X, posTo.Y].figure = this;
-				field[posFrom.X, posFrom.Y].figure = null;
-				return true;
+				ChessMove move = new ChessMove();
+				if (field[posTo.X, posTo.Y].figure != null)
+				{
+					move.AddAction(new ChessMove.RemoveAction(posTo));
+				}
+				move.AddAction(new ChessMove.MoveAction(posFrom, posTo));
+				return move;
 			}
 
-			return false;
-        }
+			return null;
+		}
 	}
 }

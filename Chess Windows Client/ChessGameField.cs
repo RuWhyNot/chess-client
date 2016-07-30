@@ -10,7 +10,7 @@ namespace Chess_Windows_Client
 
 		private Cell[,] Field = new Cell[FIELD_SIZE, FIELD_SIZE];
 
-		private ChessFigure LastMovedFigure;
+		private ChessMove LastMove;
 
 		public struct Cell
 		{
@@ -93,7 +93,7 @@ namespace Chess_Windows_Client
 
 			bool kingInCheck = false;
 			ForEachCell((pos, cell) => {
-				if (cell.figure != null && cell.figure.CanMove(Field, pos, kingsPos, LastMovedFigure))
+				if (cell.figure != null && cell.figure.CanMove(Field, pos, kingsPos, LastMove))
 				{
 					kingInCheck = true;
 					return false;
@@ -114,9 +114,18 @@ namespace Chess_Windows_Client
 			ChessFigure figure = GetCell(from).figure;
             if (figure != null && figure.GetOwner() == player)
 			{
-				if (figure.Move(ref Field, from, to, LastMovedFigure))
+				ChessMove move = figure.Move(ref Field, from, to, LastMove);
+                if (move != null)
 				{
-					LastMovedFigure = figure;
+					move.Do(ref Field, figure);
+
+					if (IsKingInCheck(player))
+					{
+						move.UnDo(ref Field);
+						return false;
+					}
+
+					LastMove = move;
                     return true;
 				}
 			}
