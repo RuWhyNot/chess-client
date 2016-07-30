@@ -79,6 +79,31 @@ namespace Chess_Windows_Client
 			return (pos.X >= 0 && pos.Y >= 0 && pos.X < FIELD_SIZE && pos.Y < FIELD_SIZE);
 		}
 
+		private bool IsKingInCheck(Player player)
+		{
+			Point kingsPos = new Point(0, 0);
+			ForEachCell((pos, cell) => {
+				if (cell.figure is King && cell.figure.GetOwner() == player)
+				{
+					kingsPos = pos;
+					return false;
+				}
+				return true;
+			});
+
+			bool kingInCheck = false;
+			ForEachCell((pos, cell) => {
+				if (cell.figure != null && cell.figure.CanMove(Field, pos, kingsPos, LastMovedFigure))
+				{
+					kingInCheck = true;
+					return false;
+				}
+				return true;
+			});
+
+			return kingInCheck;
+		}
+
 		public bool MakeMove(Player player, Point from, Point to)
 		{
 			if (!IsPosValid(from) || !IsPosValid(to) || (from.X == to.X && from.Y == to.Y))

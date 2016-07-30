@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Chess_Windows_Client.Figures.Specific
 {
@@ -14,22 +13,23 @@ namespace Chess_Windows_Client.Figures.Specific
 			g.DrawString("Q", SystemFonts.DefaultFont, new SolidBrush(color), pos);
 		}
 
-		private bool IsPathFree(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo)
-		{
-			return Rook.IsPathFree(ref field, posFrom, posTo) || Bishop.IsPathFree(ref field, posFrom, posTo);
-		}
-
-		public bool Move(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
+		public bool CanMove(ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
 		{
 			Figure targetFig = field[posTo.X, posTo.Y].figure;
 			if (targetFig == null || targetFig.GetOwner() != GetOwner())
 			{
-				if (IsPathFree(ref field, posFrom, posTo))
-				{
-					field[posTo.X, posTo.Y].figure = this;
-					field[posFrom.X, posFrom.Y].figure = null;
-					return true;
-				}
+				return Rook.IsPathFree(field, posFrom, posTo) || Bishop.IsPathFree(field, posFrom, posTo);
+			}
+			return false;
+		}
+
+		public bool Move(ref ChessGameField.Cell[,] field, Point posFrom, Point posTo, ChessFigure lastMovedFig)
+		{
+			if (CanMove(field, posFrom, posTo, lastMovedFig))
+			{
+				field[posTo.X, posTo.Y].figure = this;
+				field[posFrom.X, posFrom.Y].figure = null;
+				return true;
 			}
 
 			return false;
