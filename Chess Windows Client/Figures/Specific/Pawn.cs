@@ -68,10 +68,13 @@ namespace Chess_Windows_Client
 					|| (GetOwner() == Player.Black && posFrom.Y == posTo.Y - 1))
 				{
 					Figure opponentsFigure = field[posTo.X, posFrom.Y].figure;
-					Pawn opponentsPawn = (Pawn)opponentsFigure;
-					if (opponentsPawn != null && lastMovedFig == opponentsPawn && opponentsPawn.PreviousWasLongMove)
+					if (opponentsFigure is Pawn && opponentsFigure.GetOwner() != GetOwner())
 					{
-						return true;
+						Pawn opponentsPawn = (Pawn)opponentsFigure;
+						if (lastMovedFig == opponentsPawn && opponentsPawn.PreviousWasLongMove)
+						{
+							return true;
+						}
 					}
 				}
 			}
